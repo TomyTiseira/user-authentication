@@ -4,7 +4,7 @@ import connectDB from './config/connectDB.js';
 import authRouter from './Auth/auth.routes.js';
 import userRouter from './User/user.routes.js';
 import { errorHandler } from './middleware/errorHandle.js';
-import { PORT } from './config/enviroment.js';
+import { NODE_ENV, PORT } from './config/enviroment.js';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerDocs } from './config/swaggerConfig.js';
 import roleRouter from './Role/role.routes.js';
@@ -16,7 +16,9 @@ app.use(express.urlencoded({
 }));
 app.use(cookieParser());
 
-connectDB();
+if (NODE_ENV !== 'test') {
+  connectDB();
+}
 
 app.use('/', authRouter);
 app.use('/user', userRouter);
@@ -26,4 +28,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(errorHandler);
 
-app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
+if (NODE_ENV !== 'test') {
+  app.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
+}
+
+export default app;
