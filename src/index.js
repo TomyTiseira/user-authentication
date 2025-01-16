@@ -20,7 +20,7 @@ if (NODE_ENV !== 'test') {
   connectDB();
 }
 
-app.use('/', authRouter);
+app.use('/auth', authRouter);
 app.use('/user', userRouter);
 app.use('/role', roleRouter);
 
